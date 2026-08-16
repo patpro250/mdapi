@@ -1,0 +1,6 @@
+how to generate migration :
+pnpm exec typeorm-ts-node-commonjs migration:generate src/migrations/InitialUser -d src/data-source.ts
+
+how to run migration:
+
+pnpm exec typeorm-ts-node-commonjs migration:run -d src/data-source.ts
