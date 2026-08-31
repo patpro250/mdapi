@@ -81,6 +81,7 @@ export class MinioService implements OnModuleInit {
 
   async deleteFile(objectName: string) {
     await this.client.removeObject(this.bucket, objectName);
+    return true;
   }
 
   async getPresignedUrl(objectName: string): Promise<string> {

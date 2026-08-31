@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, Res } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entity/user.entity';
 import { hashPassword } from '../lib/hashingPassword';
@@ -25,12 +25,28 @@ export class UserService {
       phone: createUserDto.phone,
       avatar: createUserDto.avatar,
       role: createUserDto.role,
-      AcStatus: createUserDto.AccountStatus ?? AccountStatus.PENDING,
+      AcStatus: AccountStatus.PENDING,
     });
 
     return this.userRepository.save(user);
   }
 
+  async ApproveUser(id: string, status: AccountStatus) {
+    const exist = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    if (!exist) return new NotFoundException(' user not found');
+
+    const pre = await this.userRepository.preload({
+      id,
+      AcStatus: status,
+    });
+
+    if (!pre) throw new Error('fail update status');
+
+    return await this.userRepository.save(pre);
+  }
   async findUserByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { email } });
   }

@@ -8,13 +8,11 @@ import {
 } from 'class-validator';
 import { PostStatus } from '../entity/posts.entity';
 
-
-
 export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  title!: string;
+  title!: string | undefined;
 
   @IsString()
   @IsNotEmpty()
@@ -41,6 +39,4 @@ export class CreatePostDto {
   @IsOptional()
   @IsUUID()
   Author_Id?: string;
-
-  
 }

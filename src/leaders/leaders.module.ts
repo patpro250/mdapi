@@ -1,12 +1,19 @@
-import { Module } from '@nestjs/common';
-import { LeadersController } from './leaders.controller';
-import { LeadersService } from './leaders.service';
-import { Leader } from '../entity/leader.entity';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Leader } from '../entity/leader.entity';
+import { MinioModule } from '../minio/minio.module';
+import { LeaderController } from './leaders.controller';
+import { LeaderService } from '../leaders/leaders.service';
+// ... other imports
 
 @Module({
-  controllers: [LeadersController],
-  imports: [TypeOrmModule.forFeature([Leader])],
-  providers: [LeadersService]
+  imports: [
+    TypeOrmModule.forFeature([Leader]),
+    // Wrap the circular module in forwardRef
+    forwardRef(() => MinioModule),
+  ],
+  controllers: [LeaderController],
+  providers: [LeaderService],
+  exports: [LeaderService],
 })
 export class LeadersModule {}

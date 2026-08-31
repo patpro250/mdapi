@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { PostStatus } from './posts.entity';
 
 @Entity('gallery')
 export class Gallery {

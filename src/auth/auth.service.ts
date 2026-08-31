@@ -79,7 +79,10 @@ export class AuthService {
       secret: process.env.JWT_SECRET,
       expiresIn: '1d',
     });
-
+    if (user.AcStatus !== AccountStatus.ACTIVE)
+      new UnauthorizedException(
+        `Your Account Is ${user.AcStatus} Please Contact Adimi`,
+      );
     res.setHeader('x-auth-token', authToken);
 
     return {
